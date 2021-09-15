@@ -22,6 +22,17 @@ public class OptimizedBubbleSorter implements Sorter {
     @NonNull
     @Override
     public SortResults sort(final @NonNull long[] numbers) {
+        final int size = numbers.length;
+
+        if ( size == 0 )
+        {
+            // no elements to sort
+            return ComputableSortResults.builder()
+                    .identifier( OptimizedBubbleSorter.class.getSimpleName() )
+                    .processTime( Duration.ZERO )
+                    .build();
+        }
+
         boolean isSwapped = true;
 
         int iterateCount = 0;
@@ -32,7 +43,7 @@ public class OptimizedBubbleSorter implements Sorter {
 
             isSwapped = false;
 
-            for ( int i = 0; i < numbers.length - 1 - iterateCount; i++ ) {
+            for ( int i = 0; i < size - 1 - iterateCount; i++ ) {
                 if ( numbers[i] > numbers[i + 1] ) {
                     long temp = numbers[i];
                     numbers[i] = numbers[i + 1];
