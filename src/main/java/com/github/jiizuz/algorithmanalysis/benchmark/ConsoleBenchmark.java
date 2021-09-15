@@ -2,6 +2,8 @@ package com.github.jiizuz.algorithmanalysis.benchmark;
 
 import com.google.common.base.Strings;
 import com.google.common.math.DoubleMath;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.io.PrintStream;
@@ -19,6 +21,8 @@ import java.util.function.Supplier;
  * @see com.github.jiizuz.algorithmanalysis.benchmark.Benchmark
  * @since 1.0
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class ConsoleBenchmark implements Benchmark {
 
     /**
@@ -27,7 +31,9 @@ public class ConsoleBenchmark implements Benchmark {
     private final PrintStream out = System.out;
 
     /**
-     * Times that the algorithms will be executed.
+     * Default times that the algorithms will be executed.
+     *
+     * <p>This value is used when a NoArgsConstructor is used
      */
     private static final int EXECUTIONS = 1000000000;
 
@@ -47,6 +53,13 @@ public class ConsoleBenchmark implements Benchmark {
      * Suffix to set on the progress bar after the last line.
      */
     private static final char PROGRESS_BAR_SUFFIX = '>';
+
+    /**
+     * Times that the algorithms will be executed.
+     *
+     * @see #EXECUTIONS
+     */
+    private int executions = EXECUTIONS;
 
     /**
      * {@inheritDoc}
@@ -102,7 +115,7 @@ public class ConsoleBenchmark implements Benchmark {
 
     /**
      * Warms up the processor by executing the {@link Function} the desired
-     * {@link #EXECUTIONS} amount of times and reports on the {@link #out}
+     * {@link #executions} amount of times and reports on the {@link #out}
      * stream with a progress bar the current status.
      *
      * @param <I>       input of the function
@@ -116,14 +129,14 @@ public class ConsoleBenchmark implements Benchmark {
         int progressBarLength = 0;
         double percentage;
 
-        final int updateRate = DoubleMath.roundToInt( EXECUTIONS * 0.001456D, RoundingMode.HALF_UP );
+        final int updateRate = Math.max( 1, DoubleMath.roundToInt( executions * 0.001456D, RoundingMode.HALF_UP ) );
 
-        for ( int i = 0; i < EXECUTIONS; ++i )
+        for ( int i = 0; i < executions; ++i )
         {
-            progressBarLength = ( i + 1 ) / (EXECUTIONS / PROGRESS_BAR_LENGTH);
+            progressBarLength = ( i + 1 ) / (executions / PROGRESS_BAR_LENGTH);
             if ( i % updateRate == 0 )
             {
-                percentage = (double) i / EXECUTIONS * 100;
+                percentage = (double) i / executions * 100;
                 out.printf( "\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%%",
                         Strings.repeat( String.valueOf( PROGRESS_BAR_CHAR ), progressBarLength ) + PROGRESS_BAR_SUFFIX,
                         percentage );
@@ -138,7 +151,7 @@ public class ConsoleBenchmark implements Benchmark {
 
     /**
      * Calls the specified {@link Function} using the specified {@link Supplier}
-     * to give as input for the function the desired {@link #EXECUTIONS} amount
+     * to give as input for the function the desired {@link #executions} amount
      * of times and calculates the execution time of that call, the resultant
      * time is stored in a {@link TimeResults} and returned.
      *
@@ -150,24 +163,24 @@ public class ConsoleBenchmark implements Benchmark {
      * @param function  to test and time
      * @param iSupplier to retrieve the input of the function
      * @return the resultant {@link TimeResults} of the test
-     * @see #EXECUTIONS
+     * @see #executions
      */
     @NonNull
     private <I, O> TimeResults time(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
         out.printf( "Starting test for function: %s%n", function.getClass().getSimpleName() );
 
-        try (final TimeResults results = new ArrayTimeResults( EXECUTIONS )) {
+        try ( final TimeResults results = new ArrayTimeResults( executions ) ) {
             int progressBarLength = 0;
             double percentage;
 
-            final int updateRate = DoubleMath.roundToInt( EXECUTIONS * 0.001456D, RoundingMode.HALF_UP );
+            final int updateRate = Math.max( 1, DoubleMath.roundToInt( executions * 0.001456D, RoundingMode.HALF_UP ) );
 
-            for ( int i = 0; i < EXECUTIONS; ++i )
+            for ( int i = 0; i < executions; ++i )
             {
-                progressBarLength = ( i + 1 ) / ( EXECUTIONS / PROGRESS_BAR_LENGTH );
+                progressBarLength = ( i + 1 ) / ( executions / PROGRESS_BAR_LENGTH );
                 if ( i % updateRate == 0 )
                 {
-                    percentage = (double) i / EXECUTIONS * 100;
+                    percentage = (double) i / executions * 100;
                     out.printf( "\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%%",
                             Strings.repeat( String.valueOf( PROGRESS_BAR_CHAR ), progressBarLength ) + PROGRESS_BAR_SUFFIX,
                             percentage );
