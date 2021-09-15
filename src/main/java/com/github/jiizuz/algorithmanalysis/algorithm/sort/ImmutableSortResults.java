@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.time.Duration;
+import java.util.function.Function;
 
 /**
  * {@link SortResults} that promises to be <b>Immutable</b>.
@@ -17,16 +18,25 @@ import java.time.Duration;
 @Data
 @Builder
 @AllArgsConstructor
-public class ImmutableSortResults implements SortResults {
+public final class ImmutableSortResults implements SortResults {
 
     /**
-     * iterations by the process.
+     * Identifier of the results
      */
-    private final int iterations;
+    @NonNull
+    private final String identifier;
 
     /**
      * Duration of the algorithm.
      */
     @NonNull
     private final Duration processTime;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void computeIdentifier(final @NonNull Function<String, String> compute) {
+        throw new UnsupportedOperationException( "immutable implementation" );
+    }
 }
