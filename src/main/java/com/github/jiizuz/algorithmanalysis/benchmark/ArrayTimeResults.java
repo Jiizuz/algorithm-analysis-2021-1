@@ -7,6 +7,7 @@ import lombok.NonNull;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -49,6 +50,7 @@ public class ArrayTimeResults implements TimeResults {
      */
     @Override
     public void register(final int time) throws IllegalStateException {
+        checkArgument( time >= 0, "negative times are not allowed", time );
         checkIsNotClosed();
 
         times().add( time );
