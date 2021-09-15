@@ -21,8 +21,8 @@ public class BubbleSorter implements Sorter {
      */
     @NonNull
     @Override
-    public SortResults sort(final @NonNull long[] number) {
-        final int size = number.length;
+    public SortResults sort(final @NonNull long[] numbers) {
+        final int size = numbers.length;
 
         if ( size == 0 )
         {
@@ -35,19 +35,7 @@ public class BubbleSorter implements Sorter {
 
         final long startTime = System.nanoTime();
 
-        for ( int i = 0; i < size - 1; i++ )
-        {
-            for ( int j = 0; j < size - i - 1; j++ )
-            {
-                if ( number[j] > number[j + 1] )
-                {
-                    // swap number[ j + 1 ] and number[ j ]
-                    long temp = number[j];
-                    number[j] = number[j + 1];
-                    number[j + 1] = temp;
-                }
-            }
-        }
+        apply( numbers );
 
         final long endTime = System.nanoTime();
 
@@ -55,5 +43,29 @@ public class BubbleSorter implements Sorter {
                 .identifier( BubbleSorter.class.getSimpleName() )
                 .processTime( Duration.ofNanos( endTime - startTime ) )
                 .build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long[] apply(final @NonNull long[] numbers) {
+        final int length = numbers.length;
+
+        for ( int i = 0; i < length - 1; i++ )
+        {
+            for ( int j = 0; j < length - i - 1; j++ )
+            {
+                if ( numbers[j] > numbers[j + 1] )
+                {
+                    // swap numbers[ j + 1 ] and numbers[ j ]
+                    final long aux = numbers[j];
+                    numbers[j] = numbers[j + 1];
+                    numbers[j + 1] = aux;
+                }
+            }
+        }
+
+        return numbers;
     }
 }
