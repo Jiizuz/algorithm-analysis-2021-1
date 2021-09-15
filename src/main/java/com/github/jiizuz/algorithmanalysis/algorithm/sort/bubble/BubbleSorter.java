@@ -21,7 +21,7 @@ public class BubbleSorter implements Sorter {
      */
     @NonNull
     @Override
-    public SortResults sort(final @NonNull long[] number ) {
+    public SortResults sort(final @NonNull long[] number) {
         final int size = number.length;
 
         if ( size == 0 )

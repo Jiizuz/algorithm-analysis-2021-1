@@ -21,7 +21,7 @@ public class OptimizedBubbleSorter implements Sorter {
      */
     @NonNull
     @Override
-    public SortResults sort(final @NonNull long[] numbers ) {
+    public SortResults sort(final @NonNull long[] numbers) {
         boolean isSwapped = true;
 
         int iterateCount = 0;
