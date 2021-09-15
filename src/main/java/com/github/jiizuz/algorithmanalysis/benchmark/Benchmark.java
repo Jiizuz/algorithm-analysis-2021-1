@@ -29,6 +29,7 @@ public interface Benchmark {
      * @param iSupplier to retrieve the input of the function
      * @return the {@link TimeResults} generated on the tests
      * @throws NullPointerException if either the function or supplier are <tt>null</tt>
+     * @apiNote the cpu consumption of the {@link Supplier} is not considered in the tests
      */
     @NonNull <I, O>
     TimeResults test(@NonNull Function<I, O> function, @NonNull Supplier<I> iSupplier);
@@ -45,6 +46,7 @@ public interface Benchmark {
      * @param iSupplier to retrieve the input of the consumer
      * @return the {@link TimeResults} generated on the tests
      * @throws NullPointerException if either the consumer or supplier are <tt>null</tt>
+     * @apiNote the cpu consumption of the {@link Supplier} is not considered in the tests
      */
     @NonNull <I>
     TimeResults test(@NonNull Consumer<I> consumer, @NonNull Supplier<I> iSupplier);

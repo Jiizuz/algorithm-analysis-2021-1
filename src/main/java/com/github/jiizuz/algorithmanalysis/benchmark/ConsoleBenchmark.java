@@ -173,8 +173,9 @@ public class ConsoleBenchmark implements Benchmark {
                             percentage );
                 }
 
+                final I input = iSupplier.get();
                 final long start = System.nanoTime();
-                function.apply( iSupplier.get() ); // ignore output
+                function.apply( input ); // ignore output
                 final long end = System.nanoTime();
                 results.register( Math.toIntExact( end - start ) );
             }
