@@ -114,7 +114,7 @@ public class ConsoleBenchmark implements Benchmark {
     private <I, O> TimeResults time(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
         out.printf( "Starting test for function: %s%n", function.getClass().getSimpleName() );
 
-        try (final TimeResults results = new ArrayTimeResults()) {
+        try (final TimeResults results = new ArrayTimeResults( EXECUTIONS )) {
             int progressBarLength = 0;
             double percentage;
 

@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntLists;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Objects;
 
@@ -18,12 +19,13 @@ import static com.google.common.base.Preconditions.checkState;
  * @see com.github.jiizuz.algorithmanalysis.benchmark.TimeResults
  * @since 1.0
  */
+@RequiredArgsConstructor
 public class ArrayTimeResults implements TimeResults {
 
     /**
      * Initial capacity to use on the {@link IntList}.
      */
-    private static final int INITIAL_CAPACITY = 1000000000;
+    private final int initialCapacity;
 
     /**
      * Current {@link AutoCloseable} status.
@@ -92,7 +94,7 @@ public class ArrayTimeResults implements TimeResults {
     private IntList times() {
         if ( times == null )
         {
-            times = new IntArrayList( INITIAL_CAPACITY );
+            times = new IntArrayList( initialCapacity );
         }
         return times;
     }
