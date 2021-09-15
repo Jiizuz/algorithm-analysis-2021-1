@@ -53,9 +53,9 @@ public class ConsoleBenchmark implements Benchmark {
     @NonNull
     @Override
     public <I, O> TimeResults test(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
-        warmUp(function, iSupplier);
+        warmUp( function, iSupplier );
 
-        return time(function, iSupplier);
+        return time( function, iSupplier );
     }
 
     /**
@@ -69,25 +69,29 @@ public class ConsoleBenchmark implements Benchmark {
      * @param iSupplier to retrieve the input of the function
      */
     private <I, O> void warmUp(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
-        out.printf("Warming up function: %s%n", function.getClass().getSimpleName());
+        out.printf( "Warming up function: %s%n", function.getClass().getSimpleName() );
 
         int progressBarLength = 0;
         double percentage;
 
-        final int updateRate = DoubleMath.roundToInt(EXECUTIONS * 0.001456D, RoundingMode.HALF_UP);
-        for (int i = 0; i < EXECUTIONS; ++i) {
-            progressBarLength = (i + 1) / (EXECUTIONS / PROGRESS_BAR_LENGTH);
-            if (i % updateRate == 0) {
+        final int updateRate = DoubleMath.roundToInt( EXECUTIONS * 0.001456D, RoundingMode.HALF_UP );
+
+        for ( int i = 0; i < EXECUTIONS; ++i )
+        {
+            progressBarLength = ( i + 1 ) / (EXECUTIONS / PROGRESS_BAR_LENGTH);
+            if ( i % updateRate == 0 )
+            {
                 percentage = (double) i / EXECUTIONS * 100;
-                out.printf("\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%%",
-                        Strings.repeat(String.valueOf(PROGRESS_BAR_CHAR), progressBarLength) + PROGRESS_BAR_SUFFIX, percentage);
+                out.printf( "\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%%",
+                        Strings.repeat( String.valueOf( PROGRESS_BAR_CHAR ), progressBarLength ) + PROGRESS_BAR_SUFFIX,
+                        percentage );
             }
 
-            function.apply(iSupplier.get());
+            function.apply( iSupplier.get() );
         }
 
-        out.printf("\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%% (complete)%n",
-                Strings.repeat(String.valueOf(PROGRESS_BAR_CHAR), progressBarLength), 100D);
+        out.printf( "\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%% (complete)%n",
+                Strings.repeat( String.valueOf( PROGRESS_BAR_CHAR ), progressBarLength ), 100D );
     }
 
     /**
@@ -108,31 +112,35 @@ public class ConsoleBenchmark implements Benchmark {
      */
     @NonNull
     private <I, O> TimeResults time(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
-        out.printf("Starting test for function: %s%n", function.getClass().getSimpleName());
+        out.printf( "Starting test for function: %s%n", function.getClass().getSimpleName() );
 
-        try (TimeResults results = new ArrayTimeResults()) {
+        try (final TimeResults results = new ArrayTimeResults()) {
             int progressBarLength = 0;
             double percentage;
 
-            final int updateRate = DoubleMath.roundToInt(EXECUTIONS * 0.001456D, RoundingMode.HALF_UP);
-            for (int i = 0; i < EXECUTIONS; ++i) {
-                progressBarLength = (i + 1) / (EXECUTIONS / PROGRESS_BAR_LENGTH);
-                if (i % updateRate == 0) {
+            final int updateRate = DoubleMath.roundToInt( EXECUTIONS * 0.001456D, RoundingMode.HALF_UP );
+
+            for ( int i = 0; i < EXECUTIONS; ++i )
+            {
+                progressBarLength = ( i + 1 ) / ( EXECUTIONS / PROGRESS_BAR_LENGTH );
+                if ( i % updateRate == 0 )
+                {
                     percentage = (double) i / EXECUTIONS * 100;
-                    out.printf("\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%%",
-                            Strings.repeat(String.valueOf(PROGRESS_BAR_CHAR), progressBarLength) + PROGRESS_BAR_SUFFIX, percentage);
+                    out.printf( "\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%%",
+                            Strings.repeat( String.valueOf( PROGRESS_BAR_CHAR ), progressBarLength ) + PROGRESS_BAR_SUFFIX,
+                            percentage );
                 }
 
                 final long start = System.nanoTime();
-                function.apply(iSupplier.get()); // ignore output
+                function.apply( iSupplier.get() ); // ignore output
                 final long end = System.nanoTime();
-                results.register(Math.toIntExact(end - start));
+                results.register( Math.toIntExact( end - start ) );
             }
 
-            out.printf("\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%% (complete)%n",
-                    Strings.repeat(String.valueOf(PROGRESS_BAR_CHAR), progressBarLength), 100D);
+            out.printf( "\r[%-" + PROGRESS_BAR_LENGTH + "s] %2.2f%% (complete)%n",
+                    Strings.repeat( String.valueOf( PROGRESS_BAR_CHAR ), progressBarLength ), 100D );
 
-            out.printf("End test of function: %s%n", function.getClass().getSimpleName());
+            out.printf( "End test of function: %s%n", function.getClass().getSimpleName() );
 
             return results;
         }
