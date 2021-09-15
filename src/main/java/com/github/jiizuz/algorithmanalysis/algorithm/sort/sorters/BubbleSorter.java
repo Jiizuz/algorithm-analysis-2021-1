@@ -21,8 +21,8 @@ public class BubbleSorter implements Sorter {
      */
     @NonNull
     @Override
-    public SortResults sort(final @NonNull long[] number) {
-        final int size = number.length;
+    public SortResults sort(final @NonNull long[] numbers) {
+        final int size = numbers.length;
 
         if ( size == 0 )
         {
@@ -35,7 +35,7 @@ public class BubbleSorter implements Sorter {
 
         final long startTime = System.nanoTime();
 
-        apply( number );
+        apply( numbers );
 
         final long endTime = System.nanoTime();
 
