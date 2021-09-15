@@ -6,6 +6,7 @@ import lombok.NonNull;
 
 import java.io.PrintStream;
 import java.math.RoundingMode;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -56,6 +57,47 @@ public class ConsoleBenchmark implements Benchmark {
         warmUp( function, iSupplier );
 
         return time( function, iSupplier );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public <I> TimeResults test(final @NonNull Consumer<I> consumer, final @NonNull Supplier<I> iSupplier) {
+        final Function<I, Void> function = i -> {
+            consumer.accept( i );
+            return null;
+        };
+
+        return test( function, iSupplier );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public TimeResults test(final @NonNull Runnable consumer) {
+        final Function<Void, Void> function = ignored -> {
+            consumer.run();
+            return null;
+        };
+        final Supplier<Void> iSupplier = () -> null;
+
+        return test( function, iSupplier );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @NonNull
+    @Override
+    public <O> TimeResults test(final @NonNull Supplier<O> supplier) {
+        final Function<Void, O> function = ignored -> supplier.get();
+        final Supplier<Void> iSupplier = () -> null;
+
+        return test( function, iSupplier );
     }
 
     /**
