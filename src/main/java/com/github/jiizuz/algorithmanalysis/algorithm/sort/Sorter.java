@@ -19,5 +19,5 @@ public interface Sorter {
      * @throws NullPointerException if the specified array is <tt>null</tt>
      */
     @NonNull
-    SortResults sort( @NonNull long[] numbers );
+    SortResults sort(@NonNull long[] numbers);
 }
