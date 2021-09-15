@@ -35,7 +35,24 @@ public class InsertionSorter implements Sorter {
 
         final long startTime = System.nanoTime();
 
-        for ( int i = 1; i < size; ++i )
+        apply( numbers );
+
+        final long endTime = System.nanoTime();
+
+        return ComputableSortResults.builder()
+                .identifier( InsertionSorter.class.getSimpleName() )
+                .processTime( Duration.ofNanos( endTime - startTime ) )
+                .build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long[] apply(final @NonNull long[] numbers) {
+        final int length = numbers.length;
+
+        for ( int i = 1; i < length; ++i )
         {
             long key = numbers[i];
             int j = i - 1;
@@ -52,11 +69,6 @@ public class InsertionSorter implements Sorter {
             numbers[j + 1] = key;
         }
 
-        final long endTime = System.nanoTime();
-
-        return ComputableSortResults.builder()
-                .identifier( InsertionSorter.class.getSimpleName() )
-                .processTime( Duration.ofNanos( endTime - startTime ) )
-                .build();
+        return numbers;
     }
 }

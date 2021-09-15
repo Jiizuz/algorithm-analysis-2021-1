@@ -33,18 +33,37 @@ public class OptimizedBubbleSorter implements Sorter {
                     .build();
         }
 
+        final long startTime = System.nanoTime();
+
+        apply( numbers );
+
+        final long endTime = System.nanoTime();
+
+        return ComputableSortResults.builder()
+                .identifier( OptimizedBubbleSorter.class.getSimpleName() )
+                .processTime( Duration.ofNanos( endTime - startTime ) )
+                .build();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long[] apply(final @NonNull long[] numbers) {
+        final int length = numbers.length;
+
         boolean isSwapped = true;
 
         int iterateCount = 0;
 
-        final long startTime = System.nanoTime();
-
-        while ( isSwapped ) {
-
+        while ( isSwapped )
+        {
             isSwapped = false;
 
-            for ( int i = 0; i < size - 1 - iterateCount; i++ ) {
-                if ( numbers[i] > numbers[i + 1] ) {
+            for ( int i = 0; i < length - 1 - iterateCount; i++ )
+            {
+                if ( numbers[i] > numbers[i + 1] )
+                {
                     long temp = numbers[i];
                     numbers[i] = numbers[i + 1];
                     numbers[i + 1] = temp;
@@ -55,11 +74,6 @@ public class OptimizedBubbleSorter implements Sorter {
             iterateCount++;
         }
 
-        final long endTime = System.nanoTime();
-
-        return ComputableSortResults.builder()
-                .identifier( OptimizedBubbleSorter.class.getSimpleName() )
-                .processTime( Duration.ofNanos( endTime - startTime ) )
-                .build();
+        return numbers;
     }
 }
