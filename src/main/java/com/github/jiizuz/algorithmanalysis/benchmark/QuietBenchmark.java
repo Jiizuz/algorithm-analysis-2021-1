@@ -1,5 +1,7 @@
 package com.github.jiizuz.algorithmanalysis.benchmark;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import java.util.function.Consumer;
@@ -18,12 +20,23 @@ import java.util.function.Supplier;
  * @see com.github.jiizuz.algorithmanalysis.benchmark.Benchmark
  * @since 1.0
  */
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuietBenchmark implements Benchmark {
 
     /**
-     * Times that the algorithms will be executed.
+     * Default times that the algorithms will be executed.
+     *
+     * <p>This value is used when a NoArgsConstructor is used
      */
     private static final int EXECUTIONS = 1000000000;
+
+    /**
+     * Times that the algorithms will be executed.
+     *
+     * @see #EXECUTIONS
+     */
+    private int executions = EXECUTIONS;
 
     /**
      * {@inheritDoc}
@@ -79,7 +92,7 @@ public class QuietBenchmark implements Benchmark {
 
     /**
      * Warms up the processor by executing the {@link Function} the desired
-     * {@link #EXECUTIONS} amount of times.
+     * {@link #executions} amount of times.
      *
      * @param <I>       input of the function
      * @param <O>       output of the function
@@ -87,7 +100,7 @@ public class QuietBenchmark implements Benchmark {
      * @param iSupplier to retrieve the input of the function
      */
     private <I, O> void warmUp(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
-        for ( int i = 0; i < EXECUTIONS; ++i )
+        for ( int i = 0; i < executions; ++i )
         {
             function.apply( iSupplier.get() );
         }
@@ -95,7 +108,7 @@ public class QuietBenchmark implements Benchmark {
 
     /**
      * Calls the specified {@link Function} using the specified {@link Supplier}
-     * to give as input for the function the desired {@link #EXECUTIONS} amount
+     * to give as input for the function the desired {@link #executions} amount
      * of times and calculates the execution time of that call, the resultant
      * time is stored in a {@link TimeResults} and returned.
      *
@@ -104,13 +117,13 @@ public class QuietBenchmark implements Benchmark {
      * @param function  to test and time
      * @param iSupplier to retrieve the input of the function
      * @return the resultant {@link TimeResults} of the test
-     * @see #EXECUTIONS
+     * @see #executions
      */
     @NonNull
     private <I, O> TimeResults time(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
-        try ( final TimeResults results = new ArrayTimeResults( EXECUTIONS ) ) {
+        try ( final TimeResults results = new ArrayTimeResults( executions ) ) {
 
-            for ( int i = 0; i < EXECUTIONS; ++i )
+            for ( int i = 0; i < executions; ++i )
             {
                 final I input = iSupplier.get();
                 final long start = System.nanoTime();
