@@ -59,5 +59,12 @@
             <version>30.1.1-jre</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/it.unimi.dsi/fastutil -->
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>fastutil</artifactId>
+            <version>8.5.6</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
