@@ -18,6 +18,11 @@ import java.util.Objects;
 public class ArrayTimeResults implements TimeResults {
 
     /**
+     * Initial capacity to use on the {@link IntList}.
+     */
+    private static final int INITIAL_CAPACITY = 1000000000;
+
+    /**
      * {@link IntList} to store the registered times.
      */
     private IntList times = null;
@@ -66,7 +71,7 @@ public class ArrayTimeResults implements TimeResults {
     private IntList times() {
         if ( times == null )
         {
-            times = new IntArrayList( 1000000000 );
+            times = new IntArrayList( INITIAL_CAPACITY );
         }
         return times;
     }
