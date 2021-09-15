@@ -27,7 +27,7 @@ public class ArrayTimeResults implements TimeResults {
      */
     @Override
     public void register(final int time) {
-        times().add(time);
+        times().add( time );
     }
 
     /**
@@ -35,11 +35,12 @@ public class ArrayTimeResults implements TimeResults {
      */
     @NonNull
     public IntList getTimes() {
-        if (Objects.isNull(times)) {
+        if ( Objects.isNull( times ) )
+        {
             return IntLists.emptyList();
         }
 
-        return IntLists.unmodifiable(times);
+        return IntLists.unmodifiable( times );
     }
 
     /**
@@ -47,7 +48,8 @@ public class ArrayTimeResults implements TimeResults {
      */
     @Override
     public void dump() {
-        if (Objects.nonNull(times)) {
+        if ( Objects.nonNull( times ) )
+        {
             times.clear();
             times = null;
         }
@@ -62,8 +64,9 @@ public class ArrayTimeResults implements TimeResults {
      */
     @NonNull
     private IntList times() {
-        if (times == null) {
-            times = new IntArrayList(1000000000);
+        if ( times == null )
+        {
+            times = new IntArrayList( 1000000000 );
         }
         return times;
     }
