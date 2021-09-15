@@ -1,7 +1,7 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.sort;
 
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.bubble.BubbleSorter;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.bubble.OptimizedBubbleSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.BubbleSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.OptimizedBubbleSorter;
 import lombok.experimental.UtilityClass;
 
 /**
