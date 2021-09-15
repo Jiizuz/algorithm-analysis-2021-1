@@ -1,6 +1,6 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.sort.bubble;
 
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.ImmutableSortResults;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.ComputableSortResults;
 import com.github.jiizuz.algorithmanalysis.algorithm.sort.SortResults;
 import com.github.jiizuz.algorithmanalysis.algorithm.sort.Sorter;
 import lombok.NonNull;
@@ -25,7 +25,6 @@ public class OptimizedBubbleSorter implements Sorter {
         boolean isSwapped = true;
 
         int iterateCount = 0;
-        int totalIterations = 0;
 
         final long startTime = System.nanoTime();
 
@@ -34,7 +33,6 @@ public class OptimizedBubbleSorter implements Sorter {
             isSwapped = false;
 
             for ( int i = 0; i < numbers.length - 1 - iterateCount; i++ ) {
-                totalIterations++;
                 if ( numbers[i] > numbers[i + 1] ) {
                     long temp = numbers[i];
                     numbers[i] = numbers[i + 1];
@@ -48,8 +46,8 @@ public class OptimizedBubbleSorter implements Sorter {
 
         final long endTime = System.nanoTime();
 
-        return ImmutableSortResults.builder()
-                .iterations( totalIterations )
+        return ComputableSortResults.builder()
+                .identifier( OptimizedBubbleSorter.class.getSimpleName() )
                 .processTime( Duration.ofNanos( endTime - startTime ) )
                 .build();
     }
