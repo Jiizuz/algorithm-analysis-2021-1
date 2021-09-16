@@ -133,6 +133,8 @@ public class ChartSorterComparator implements SorterComparator {
                 final TimeResults results = benchmark.test( sorters.get( j ), toSort::clone );
 
                 xySeries[j].add( i, results.getTimes().intStream().average().orElse( 0D ) );
+
+                results.dump();
             }
         }
     }
