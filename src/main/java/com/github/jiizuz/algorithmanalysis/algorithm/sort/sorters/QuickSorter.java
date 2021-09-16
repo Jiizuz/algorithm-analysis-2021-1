@@ -37,7 +37,7 @@ public class QuickSorter implements Sorter {
      */
     @NonNull
     @Override
-    public SortResults sort(final @NonNull long[] numbers) {
+    public SortResults sort(final long @NonNull [] numbers) {
         final int size = numbers.length;
 
         if ( size == 0 )
