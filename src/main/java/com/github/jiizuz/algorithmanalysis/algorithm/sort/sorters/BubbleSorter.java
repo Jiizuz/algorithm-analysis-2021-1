@@ -21,7 +21,7 @@ public class BubbleSorter implements Sorter {
      */
     @NonNull
     @Override
-    public SortResults sort(final @NonNull long[] numbers) {
+    public SortResults sort(final long @NonNull [] numbers) {
         final int size = numbers.length;
 
         if ( size == 0 )
@@ -49,7 +49,7 @@ public class BubbleSorter implements Sorter {
      * {@inheritDoc}
      */
     @Override
-    public long[] apply(final @NonNull long[] numbers) {
+    public long[] apply(final long[] numbers) {
         final int length = numbers.length;
 
         for ( int i = 0; i < length - 1; i++ )
