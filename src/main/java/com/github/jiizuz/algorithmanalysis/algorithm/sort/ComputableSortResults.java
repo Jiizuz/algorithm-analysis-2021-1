@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.function.Function;
 
 /**
- * {@link SortResults} that promises to be <b>Immutable</b>.
+ * {@link SortResults} that allows computation in the fields.
  *
  * @author <a href="mailto:masterchack92@hotmail.com">Jiizuz</a>
  * @see com.github.jiizuz.algorithmanalysis.algorithm.sort.SortResults
@@ -18,13 +18,13 @@ import java.util.function.Function;
 @Data
 @Builder
 @AllArgsConstructor
-public final class ImmutableSortResults implements SortResults {
+public class ComputableSortResults implements SortResults {
 
     /**
      * Identifier of the results
      */
     @NonNull
-    private final String identifier;
+    private String identifier;
 
     /**
      * Duration of the algorithm.
@@ -37,6 +37,6 @@ public final class ImmutableSortResults implements SortResults {
      */
     @Override
     public void computeIdentifier(final @NonNull Function<String, String> compute) {
-        throw new UnsupportedOperationException( "immutable implementation" );
+        identifier = compute.apply( identifier );
     }
 }

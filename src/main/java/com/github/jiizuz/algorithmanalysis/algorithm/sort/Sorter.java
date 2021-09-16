@@ -6,9 +6,10 @@ import lombok.NonNull;
  * Algorithm to sort an array of elements.
  *
  * @author <a href="mailto:masterchack92@hotmail.com">Jiizuz</a>
+ * @see com.github.jiizuz.algorithmanalysis.algorithm.sort.SortFunction
  * @since 1.0
  */
-public interface Sorter {
+public interface Sorter extends SortFunction {
 
     /**
      * Sorts the specified {@param numbers} array of elements
@@ -19,5 +20,5 @@ public interface Sorter {
      * @throws NullPointerException if the specified array is <tt>null</tt>
      */
     @NonNull
-    SortResults sort( @NonNull long[] numbers );
+    SortResults sort(long @NonNull [] numbers);
 }

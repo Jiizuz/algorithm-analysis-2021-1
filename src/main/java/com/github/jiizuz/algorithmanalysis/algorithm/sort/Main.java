@@ -1,7 +1,13 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.sort;
 
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.bubble.BubbleSorter;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.bubble.OptimizedBubbleSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.array.ArrayGenerator;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.BubbleSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.InsertionSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.OptimizedBubbleSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.QuickSorter;
+import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
+import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
+import com.google.common.collect.ImmutableList;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -14,22 +20,40 @@ import lombok.experimental.UtilityClass;
 public class Main {
 
     /**
+     * Executions to made in the {@link Benchmark}.
+     */
+    private final int BENCHMARK_EXECUTIONS = 10_000;
+
+    /**
+     * Tests to made in the {@link SorterComparator}.
+     */
+    private final int COMPARATOR_TESTS = 300;
+
+    /**
      * Runs the main instance of the project.
      *
      * @param args passed in the command line
      */
-    public static void main(String[] args) {
-        final long[] longs = { 3, 5, 1, 2, 4 };
+    public void main( String[] args ) {
+        // sorters to compare
+        final ImmutableList<Sorter> sorters = new ImmutableList.Builder<Sorter>()
+                .add( new BubbleSorter() )
+                .add( new OptimizedBubbleSorter() )
+                .add( new InsertionSorter() )
+                .add( new QuickSorter() )
+                .build();
 
-        final Sorter bubbleSorter = new BubbleSorter();
-        final SortResults bubbleSortResults = bubbleSorter.sort(longs.clone());
-        final Sorter optimizedBubbleSorter = new OptimizedBubbleSorter();
-        final SortResults optimizedBubbleSortResults = optimizedBubbleSorter.sort(longs.clone());
+        // Benchmark to use on the tests
+        final Benchmark benchmark = new QuietBenchmark( BENCHMARK_EXECUTIONS );
 
-        System.out.printf("%5d | %,d ns%n",
-                bubbleSortResults.getIterations(), bubbleSortResults.getProcessTime().getNano());
-        System.out.println();
-        System.out.printf("%5d | %,d ns%n",
-                optimizedBubbleSortResults.getIterations(), optimizedBubbleSortResults.getProcessTime().getNano());
+        // comparator to generate the comparisons
+        final SorterComparator comparator = ChartSorterComparator.builder()
+                .arrGenerator(i -> ArrayGenerator.generateAscending( i, 0L ))
+                .benchmark( benchmark )
+                .tests( COMPARATOR_TESTS )
+                .build();
+
+        comparator.accumulate( sorters );
+        comparator.displayData();
     }
 }
