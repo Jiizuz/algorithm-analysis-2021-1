@@ -56,7 +56,7 @@ public class QuickSorter implements Sorter {
         final long endTime = System.nanoTime();
 
         return ComputableSortResults.builder()
-                .identifier( OptimizedBubbleSorter.class.getSimpleName() )
+                .identifier( QuickSorter.class.getSimpleName() )
                 .processTime( Duration.ofNanos( endTime - startTime ) )
                 .build();
     }
