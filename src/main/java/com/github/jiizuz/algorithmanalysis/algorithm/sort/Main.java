@@ -1,10 +1,7 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.sort;
 
 import com.github.jiizuz.algorithmanalysis.algorithm.array.ArrayGenerator;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.BubbleSorter;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.InsertionSorter;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.OptimizedBubbleSorter;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.QuickSorter;
+import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.*;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
 import com.google.common.collect.ImmutableList;
@@ -41,6 +38,7 @@ public class Main {
                 .add( new OptimizedBubbleSorter() )
                 .add( new InsertionSorter() )
                 .add( new QuickSorter() )
+                .add( new MergeSorter() )
                 .build();
 
         // Benchmark to use on the tests
