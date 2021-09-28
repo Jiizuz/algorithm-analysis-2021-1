@@ -13,6 +13,9 @@ public class RecursiveFactorial implements Factorial {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Time complexity - O(n)
+     * <p>Space complexity - O(n)
      */
     @Override
     public long get(final int n) {
