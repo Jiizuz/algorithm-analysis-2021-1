@@ -1,7 +1,7 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart;
 
 import com.github.jiizuz.algorithmanalysis.algorithm.sort.Sorter;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.SorterComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.SorterComparator;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.TimeResults;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ import java.util.function.IntFunction;
  * <p>A {@link ChartFrame} is used to pack and display the chart.
  *
  * @author <a href="mailto:masterchack92@hotmail.com">Jiizuz</a>
- * @see com.github.jiizuz.algorithmanalysis.algorithm.sort.SorterComparator
+ * @see SorterComparator
  * @since 1.0
  */
 @Builder

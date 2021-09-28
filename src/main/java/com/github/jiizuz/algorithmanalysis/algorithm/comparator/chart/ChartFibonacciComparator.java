@@ -1,7 +1,7 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart;
 
 import com.github.jiizuz.algorithmanalysis.algorithm.fibonacci.Fibonacci;
-import com.github.jiizuz.algorithmanalysis.algorithm.fibonacci.FibonacciComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FibonacciComparator;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.TimeResults;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
@@ -27,7 +27,7 @@ import java.util.RandomAccess;
  * <p>A {@link ChartFrame} is used to pack and display the chart.
  *
  * @author <a href="mailto:masterchack92@hotmail.com">Jiizuz</a>
- * @see com.github.jiizuz.algorithmanalysis.algorithm.fibonacci.FibonacciComparator
+ * @see FibonacciComparator
  * @since 1.0
  */
 @Builder
