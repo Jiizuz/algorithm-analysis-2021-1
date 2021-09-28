@@ -47,6 +47,9 @@ public class InsertionSorter implements Sorter {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Time complexity - Best case: O(n), Worst/Average case: O(n<sup>2</sup>)
+     * <p>Space complexity - O(n)
      */
     @Override
     public long[] apply(final long[] numbers) {
