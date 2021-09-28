@@ -1,7 +1,7 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.fibonacci;
 
-import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FibonacciComparator;
-import com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart.ChartFibonacciComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart.ChartFunctionComparator;
 import com.github.jiizuz.algorithmanalysis.algorithm.iterative.iteratives.IterativeFibonacci;
 import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.RecursiveCacheFibonacci;
 import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.RecursiveFibonacci;
@@ -10,6 +10,8 @@ import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
 import com.google.common.collect.ImmutableList;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import lombok.experimental.UtilityClass;
+
+import java.util.function.Function;
 
 /**
  * Main class of the project to initialize and run.
@@ -26,7 +28,7 @@ public class Main {
     private final int BENCHMARK_EXECUTIONS = 10_000;
 
     /**
-     * Tests to made in the {@link FibonacciComparator}.
+     * Tests to made in the {@link FunctionComparator}.
      */
     private final int COMPARATOR_TESTS = 300;
 
@@ -37,7 +39,7 @@ public class Main {
      */
     public void main(String[] args) {
         // algorithms to compare
-        final ImmutableList<Fibonacci> algorithms = new ImmutableList.Builder<Fibonacci>()
+        final ImmutableList<Function<Integer, Long>> algorithms = new ImmutableList.Builder<Function<Integer, Long>>()
                 .add( new IterativeFibonacci() )
                 .add( new RecursiveFibonacci() )
                 .add( new RecursiveCacheFibonacci() )
@@ -47,10 +49,14 @@ public class Main {
         final Benchmark benchmark = new QuietBenchmark( BENCHMARK_EXECUTIONS );
 
         // comparator to generate the comparisons
-        final FibonacciComparator comparator = ChartFibonacciComparator.builder()
-                .numberSpecifier( Int2IntFunction.identity() )
+        final FunctionComparator<Integer, Long> comparator = ChartFunctionComparator.<Integer, Long>builder()
+                .inputSupplier( i -> i )
+                .cloneFunction( Int2IntFunction.identity() )
                 .benchmark( benchmark )
                 .tests( COMPARATOR_TESTS )
+                .chartTitle( "CPU Time / Fibonacci number" )
+                .xAxisLabel( "Fibonacci number" )
+                .frameTitle( "Fibonacci Comparator" )
                 .build();
 
         comparator.accumulate( algorithms );

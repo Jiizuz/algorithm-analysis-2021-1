@@ -1,13 +1,15 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.sort;
 
 import com.github.jiizuz.algorithmanalysis.algorithm.array.ArrayGenerator;
-import com.github.jiizuz.algorithmanalysis.algorithm.comparator.SorterComparator;
-import com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart.ChartSorterComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart.ChartFunctionComparator;
 import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.*;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
 import com.google.common.collect.ImmutableList;
 import lombok.experimental.UtilityClass;
+
+import java.util.function.Function;
 
 /**
  * Main class of the project to initialize and run.
@@ -24,7 +26,7 @@ public class Main {
     private final int BENCHMARK_EXECUTIONS = 10_000;
 
     /**
-     * Tests to made in the {@link SorterComparator}.
+     * Tests to made in the {@link FunctionComparator}.
      */
     private final int COMPARATOR_TESTS = 300;
 
@@ -35,7 +37,7 @@ public class Main {
      */
     public void main( String[] args ) {
         // sorters to compare
-        final ImmutableList<Sorter> sorters = new ImmutableList.Builder<Sorter>()
+        final ImmutableList<Function<long[], long[]>> sorters = new ImmutableList.Builder<Function<long[], long[]>>()
                 .add( new BubbleSorter() )
                 .add( new OptimizedBubbleSorter() )
                 .add( new InsertionSorter() )
@@ -47,10 +49,14 @@ public class Main {
         final Benchmark benchmark = new QuietBenchmark( BENCHMARK_EXECUTIONS );
 
         // comparator to generate the comparisons
-        final SorterComparator comparator = ChartSorterComparator.builder()
-                .arrGenerator(i -> ArrayGenerator.generateAscending( i, 0L ))
+        final FunctionComparator<long[], long[]> comparator = ChartFunctionComparator.<long[], long[]>builder()
+                .inputSupplier( i -> ArrayGenerator.generateAscending( i, 0L ) )
+                .cloneFunction( long[]::clone )
                 .benchmark( benchmark )
                 .tests( COMPARATOR_TESTS )
+                .chartTitle( "CPU Time / array length" )
+                .xAxisLabel( "array length" )
+                .frameTitle( "Sorters Comparator" )
                 .build();
 
         comparator.accumulate( sorters );
