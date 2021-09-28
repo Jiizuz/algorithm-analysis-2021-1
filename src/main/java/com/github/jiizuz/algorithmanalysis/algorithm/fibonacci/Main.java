@@ -1,5 +1,6 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.fibonacci;
 
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart.ChartFibonacciComparator;
 import com.github.jiizuz.algorithmanalysis.algorithm.iterative.iteratives.IterativeFibonacci;
 import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.RecursiveCacheFibonacci;
 import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.RecursiveFibonacci;
