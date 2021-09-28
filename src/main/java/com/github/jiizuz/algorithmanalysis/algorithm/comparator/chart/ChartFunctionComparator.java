@@ -1,7 +1,9 @@
-package com.github.jiizuz.algorithmanalysis.algorithm.sort;
+package com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart;
 
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.TimeResults;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
@@ -13,39 +15,34 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import java.util.List;
 import java.util.RandomAccess;
-import java.util.function.IntFunction;
+import java.util.function.Function;
 
 /**
- * {@link SorterComparator} that uses a {@link JFreeChart} to
+ * {@link FunctionComparator} that uses a {@link JFreeChart} to
  * display a comparison in a XY Line Chart.
  *
- * <p>This implementation tests the sorters based on a specified
+ * <p>This implementation tests the functions based on a specified
  * amount of times on {@link #tests}.
- *
- * <p>The used array to send to the sorters is generated with the
- * specified {@link #arrGenerator} sending it the number of the
- * current tests. The same array is sent to all the sorters in
- * order to make a valid tests with the same data.
  *
  * <p>A {@link ChartFrame} is used to pack and display the chart.
  *
  * @author <a href="mailto:masterchack92@hotmail.com">Jiizuz</a>
- * @see com.github.jiizuz.algorithmanalysis.algorithm.sort.SorterComparator
+ * @see com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator
  * @since 1.0
  */
 @Builder
 @AllArgsConstructor
-public class ChartSorterComparator implements SorterComparator {
+public class ChartFunctionComparator<I, O> implements FunctionComparator<I, O> {
 
     /**
      * Default title to set on the <tt>Chart</tt>.
      */
-    private static final String CHART_TITLE = "CPU Time / array length";
+    private static final String CHART_TITLE = "CPU Time / n input";
 
     /**
      * Default label for the <tt>X axis</tt> on the chart.
      */
-    private static final String X_AXIS_LABEL = "array length";
+    private static final String X_AXIS_LABEL = "n input";
 
     /**
      * Default label for the <tt>Y axis</tt> on the chart.
@@ -55,7 +52,7 @@ public class ChartSorterComparator implements SorterComparator {
     /**
      * Default title to set on the <tt>Frame</tt>.
      */
-    private static final String FRAME_TITLE = "Sorters Comparator";
+    private static final String FRAME_TITLE = "Function Comparator";
 
     /**
      * Default amount of tests to made if not specified.
@@ -63,12 +60,25 @@ public class ChartSorterComparator implements SorterComparator {
     private static final int DEFAULT_TESTS = 100;
 
     /**
-     * {@link IntFunction} to generate arrays to sort.
+     * {@link Int2ObjectFunction} to retrieve the input of the next function call.
      *
-     * <p>The given input is the number of the test.
+     * <p>The given input is the current text number.
      */
     @NonNull
-    private final IntFunction<long[]> arrGenerator;
+    private final Int2ObjectFunction<I> inputSupplier;
+
+    /**
+     * {@link Function} to retrieve a clone input of the specified generated.
+     *
+     * <p>The given input is the input to clone.
+     *
+     * @implSpec The returned input must accomplish the next sentence:
+     * <pre>
+     *     input.equals(clone) == true && input != clone;
+     * </pre>
+     */
+    @NonNull
+    private final Function<I, I> cloneFunction;
 
     /**
      * {@link Benchmark} to use on the accumulation.
@@ -107,7 +117,7 @@ public class ChartSorterComparator implements SorterComparator {
     private final String frameTitle = FRAME_TITLE;
 
     /**
-     * {@link XYSeriesCollection} to accumulate on the series of the sorters.
+     * {@link XYSeriesCollection} to accumulate on the series of the Function calls.
      */
     private final XYSeriesCollection seriesCollection = new XYSeriesCollection();
 
@@ -115,22 +125,23 @@ public class ChartSorterComparator implements SorterComparator {
      * {@inheritDoc}
      */
     @Override
-    public <T extends List<Sorter> & RandomAccess> void accumulate(final @NonNull T sorters) {
-        final XYSeries[] xySeries = new XYSeries[ sorters.size() ];
+    public <T extends List<Function<I, O>> & RandomAccess> void accumulate(final @NonNull T functions) {
+        final XYSeries[] xySeries = new XYSeries[ functions.size() ];
 
-        for ( int i = 0, n = sorters.size(); i < n; ++i )
+        for ( int i = 0, n = functions.size(); i < n; ++i )
         {
-            final XYSeries series = new XYSeries( sorters.get( i ).getClass().getSimpleName() );
+            final XYSeries series = new XYSeries( functions.get( i ).getClass().getSimpleName() );
             seriesCollection.addSeries( series );
             xySeries[i] = series;
         }
 
         for ( int i = 1; i <= tests; ++i )
         {
-            final long[] toSort = arrGenerator.apply( i );
+            final I input = inputSupplier.get( i );
 
-            for ( int j = 0, n = sorters.size(); j < n; ++j ) {
-                final TimeResults results = benchmark.test( sorters.get( j ), toSort::clone );
+            for ( int j = 0, n = functions.size(); j < n; ++j )
+            {
+                final TimeResults results = benchmark.test( functions.get( j ), () -> cloneFunction.apply( input ) );
 
                 xySeries[j].add( i, results.getTimes().intStream().average().orElse( 0D ) );
 

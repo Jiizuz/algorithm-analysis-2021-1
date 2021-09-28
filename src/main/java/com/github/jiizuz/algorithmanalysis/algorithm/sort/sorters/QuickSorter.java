@@ -63,6 +63,9 @@ public class QuickSorter implements Sorter {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Time complexity - O(n log n)
+     * <p>Space complexity - O(n)
      */
     @Override
     public long[] apply(final long[] longs) {

@@ -47,6 +47,9 @@ public class OptimizedBubbleSorter implements Sorter {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Time complexity - O(n<sup>2</sup>)
+     * <p>Space complexity - O(1)
      */
     @Override
     public long[] apply(final long[] numbers) {

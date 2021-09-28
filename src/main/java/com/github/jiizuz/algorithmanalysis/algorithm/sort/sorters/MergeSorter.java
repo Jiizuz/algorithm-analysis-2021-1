@@ -53,6 +53,9 @@ public class MergeSorter implements Sorter {
 
     /**
      * {@inheritDoc}
+     *
+     * <p>Time complexity - Best case: O(n log n) typical O(n) natural variant, Worst/Average case: O(n log n)
+     * <p>Space complexity - O(n)
      */
     @Override
     public long[] apply(final long[] numbers) {

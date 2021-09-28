@@ -1,12 +1,14 @@
-package com.github.jiizuz.algorithmanalysis.algorithm.sort;
+package com.github.jiizuz.algorithmanalysis.algorithm.fibonacci;
 
-import com.github.jiizuz.algorithmanalysis.algorithm.array.ArrayGenerator;
 import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator;
 import com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart.ChartFunctionComparator;
-import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.*;
+import com.github.jiizuz.algorithmanalysis.algorithm.iterative.iteratives.IterativeFibonacci;
+import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.RecursiveCacheFibonacci;
+import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.RecursiveFibonacci;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
 import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import lombok.experimental.UtilityClass;
 
 import java.util.function.Function;
@@ -35,31 +37,29 @@ public class Main {
      *
      * @param args passed in the command line
      */
-    public void main( String[] args ) {
-        // sorters to compare
-        final ImmutableList<Function<long[], long[]>> sorters = new ImmutableList.Builder<Function<long[], long[]>>()
-                .add( new BubbleSorter() )
-                .add( new OptimizedBubbleSorter() )
-                .add( new InsertionSorter() )
-                .add( new QuickSorter() )
-                .add( new MergeSorter() )
+    public void main(String[] args) {
+        // algorithms to compare
+        final ImmutableList<Function<Integer, Long>> algorithms = new ImmutableList.Builder<Function<Integer, Long>>()
+                .add( new IterativeFibonacci() )
+                .add( new RecursiveFibonacci() )
+                .add( new RecursiveCacheFibonacci() )
                 .build();
 
         // Benchmark to use on the tests
         final Benchmark benchmark = new QuietBenchmark( BENCHMARK_EXECUTIONS );
 
         // comparator to generate the comparisons
-        final FunctionComparator<long[], long[]> comparator = ChartFunctionComparator.<long[], long[]>builder()
-                .inputSupplier( i -> ArrayGenerator.generateAscending( i, 0L ) )
-                .cloneFunction( long[]::clone )
+        final FunctionComparator<Integer, Long> comparator = ChartFunctionComparator.<Integer, Long>builder()
+                .inputSupplier( i -> i )
+                .cloneFunction( Int2IntFunction.identity() )
                 .benchmark( benchmark )
                 .tests( COMPARATOR_TESTS )
-                .chartTitle( "CPU Time / array length" )
-                .xAxisLabel( "array length" )
-                .frameTitle( "Sorters Comparator" )
+                .chartTitle( "CPU Time / Fibonacci number" )
+                .xAxisLabel( "Fibonacci number" )
+                .frameTitle( "Fibonacci Comparator" )
                 .build();
 
-        comparator.accumulate( sorters );
+        comparator.accumulate( algorithms );
         comparator.displayData();
     }
 }
