@@ -1,7 +1,6 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.sort;
 
 import com.github.jiizuz.algorithmanalysis.algorithm.array.ArrayGenerator;
-import com.github.jiizuz.algorithmanalysis.algorithm.iterative.iteratives.IterativeSum;
 import com.github.jiizuz.algorithmanalysis.algorithm.sort.sorters.*;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
