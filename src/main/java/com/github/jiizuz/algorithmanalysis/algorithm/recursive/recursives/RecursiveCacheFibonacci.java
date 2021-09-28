@@ -35,16 +35,16 @@ public class RecursiveCacheFibonacci implements Fibonacci {
      * @return the Fibonacci number of <tt>n</tt>
      */
     private long fibonacci(final int n, final Long[] cache) {
-        final long result;
+        Long result = cache[ n - 1 ];
 
-        if ( Objects.nonNull( cache[ n - 1 ] ) )
+        if ( Objects.nonNull( result ) )
         {
-            return cache[ n - 1 ];
+            return result;
         } else
         {
             if ( n <= 2 )
             {
-                result = 1;
+                result = 1L;
             } else
             {
                 result = fibonacci( n - 1, cache ) + fibonacci( n - 2, cache );
