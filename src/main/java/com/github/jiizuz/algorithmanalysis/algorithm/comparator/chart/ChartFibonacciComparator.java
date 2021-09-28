@@ -114,21 +114,24 @@ public class ChartFibonacciComparator implements FibonacciComparator {
      */
     @Override
     public <T extends List<Fibonacci> & RandomAccess> void accumulate(final @NonNull T functions) {
-        final XYSeries[] xySeries = new XYSeries[functions.size()];
+        final XYSeries[] xySeries = new XYSeries[ functions.size() ];
 
-        for (int i = 0, n = functions.size(); i < n; ++i) {
-            final XYSeries series = new XYSeries(functions.get(i).getClass().getSimpleName());
-            seriesCollection.addSeries(series);
+        for ( int i = 0, n = functions.size(); i < n; ++i )
+        {
+            final XYSeries series = new XYSeries( functions.get( i ).getClass().getSimpleName() );
+            seriesCollection.addSeries( series );
             xySeries[i] = series;
         }
 
-        for (int i = 1; i <= tests; ++i) {
-            final int fibonacciOf = numberSpecifier.apply(i);
+        for ( int i = 1; i <= tests; ++i )
+        {
+            final int fibonacciOf = numberSpecifier.apply( i );
 
-            for (int j = 0, n = functions.size(); j < n; ++j) {
-                final TimeResults results = benchmark.test(functions.get(j), () -> fibonacciOf);
+            for ( int j = 0, n = functions.size(); j < n; ++j )
+            {
+                final TimeResults results = benchmark.test( functions.get( j ), () -> fibonacciOf );
 
-                xySeries[j].add(i, results.getTimes().intStream().average().orElse(0D));
+                xySeries[j].add( i, results.getTimes().intStream().average().orElse( 0D ) );
 
                 results.dump();
             }
@@ -140,9 +143,9 @@ public class ChartFibonacciComparator implements FibonacciComparator {
      */
     @Override
     public void displayData() {
-        final JFreeChart chart = ChartFactory.createXYLineChart(chartTitle, xAxisLabel, yAxisLabel, seriesCollection);
-        final ChartFrame frame = new ChartFrame(frameTitle, chart);
+        final JFreeChart chart = ChartFactory.createXYLineChart( chartTitle, xAxisLabel, yAxisLabel, seriesCollection );
+        final ChartFrame frame = new ChartFrame( frameTitle, chart );
         frame.pack();
-        frame.setVisible(true);
+        frame.setVisible( true );
     }
 }
