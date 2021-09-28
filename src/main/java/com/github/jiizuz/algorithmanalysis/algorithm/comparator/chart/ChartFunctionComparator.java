@@ -1,10 +1,9 @@
 package com.github.jiizuz.algorithmanalysis.algorithm.comparator.chart;
 
-import com.github.jiizuz.algorithmanalysis.algorithm.fibonacci.Fibonacci;
-import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FibonacciComparator;
+import com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator;
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.TimeResults;
-import it.unimi.dsi.fastutil.ints.Int2IntFunction;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
@@ -16,9 +15,10 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import java.util.List;
 import java.util.RandomAccess;
+import java.util.function.Function;
 
 /**
- * {@link FibonacciComparator} that uses a {@link JFreeChart} to
+ * {@link FunctionComparator} that uses a {@link JFreeChart} to
  * display a comparison in a XY Line Chart.
  *
  * <p>This implementation tests the functions based on a specified
@@ -27,22 +27,22 @@ import java.util.RandomAccess;
  * <p>A {@link ChartFrame} is used to pack and display the chart.
  *
  * @author <a href="mailto:masterchack92@hotmail.com">Jiizuz</a>
- * @see FibonacciComparator
+ * @see com.github.jiizuz.algorithmanalysis.algorithm.comparator.FunctionComparator
  * @since 1.0
  */
 @Builder
 @AllArgsConstructor
-public class ChartFibonacciComparator implements FibonacciComparator {
+public class ChartFunctionComparator<I, O> implements FunctionComparator<I, O> {
 
     /**
      * Default title to set on the <tt>Chart</tt>.
      */
-    private static final String CHART_TITLE = "CPU Time / Fibonacci number";
+    private static final String CHART_TITLE = "CPU Time / n input";
 
     /**
      * Default label for the <tt>X axis</tt> on the chart.
      */
-    private static final String X_AXIS_LABEL = "Fibonacci number";
+    private static final String X_AXIS_LABEL = "n input";
 
     /**
      * Default label for the <tt>Y axis</tt> on the chart.
@@ -52,7 +52,7 @@ public class ChartFibonacciComparator implements FibonacciComparator {
     /**
      * Default title to set on the <tt>Frame</tt>.
      */
-    private static final String FRAME_TITLE = "Fibonacci Comparator";
+    private static final String FRAME_TITLE = "Function Comparator";
 
     /**
      * Default amount of tests to made if not specified.
@@ -60,13 +60,25 @@ public class ChartFibonacciComparator implements FibonacciComparator {
     private static final int DEFAULT_TESTS = 100;
 
     /**
-     * {@link Int2IntFunction} to retrieve the amount of fibonacci numbers to calculate
-     * based on the current test made.
+     * {@link Int2ObjectFunction} to retrieve the input of the next function call.
      *
-     * <p>The given input is the number of the test.
+     * <p>The given input is the current text number.
      */
     @NonNull
-    private final Int2IntFunction numberSpecifier;
+    private final Int2ObjectFunction<I> inputSupplier;
+
+    /**
+     * {@link Function} to retrieve a clone input of the specified generated.
+     *
+     * <p>The given input is the input to clone.
+     *
+     * @implSpec The returned input must accomplish the next sentence:
+     * <pre>
+     *     input.equals(clone) == true && input != clone;
+     * </pre>
+     */
+    @NonNull
+    private final Function<I, I> cloneFunction;
 
     /**
      * {@link Benchmark} to use on the accumulation.
@@ -105,7 +117,7 @@ public class ChartFibonacciComparator implements FibonacciComparator {
     private final String frameTitle = FRAME_TITLE;
 
     /**
-     * {@link XYSeriesCollection} to accumulate on the series of the Fibonacci numbers.
+     * {@link XYSeriesCollection} to accumulate on the series of the Function calls.
      */
     private final XYSeriesCollection seriesCollection = new XYSeriesCollection();
 
@@ -113,7 +125,7 @@ public class ChartFibonacciComparator implements FibonacciComparator {
      * {@inheritDoc}
      */
     @Override
-    public <T extends List<Fibonacci> & RandomAccess> void accumulate(final @NonNull T functions) {
+    public <T extends List<Function<I, O>> & RandomAccess> void accumulate(final @NonNull T functions) {
         final XYSeries[] xySeries = new XYSeries[ functions.size() ];
 
         for ( int i = 0, n = functions.size(); i < n; ++i )
@@ -125,11 +137,11 @@ public class ChartFibonacciComparator implements FibonacciComparator {
 
         for ( int i = 1; i <= tests; ++i )
         {
-            final int fibonacciOf = numberSpecifier.apply( i );
+            final I input = inputSupplier.get( i );
 
             for ( int j = 0, n = functions.size(); j < n; ++j )
             {
-                final TimeResults results = benchmark.test( functions.get( j ), () -> fibonacciOf );
+                final TimeResults results = benchmark.test( functions.get( j ), () -> cloneFunction.apply( input ) );
 
                 xySeries[j].add( i, results.getTimes().intStream().average().orElse( 0D ) );
 
