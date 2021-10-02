@@ -16,6 +16,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import java.util.List;
 import java.util.RandomAccess;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * {@link FunctionComparator} that uses a {@link JFreeChart} to
@@ -78,7 +79,7 @@ public class ChartFunctionComparator<I, O> implements FunctionComparator<I, O> {
      * </pre>
      */
     @NonNull
-    private final Function<I, I> cloneFunction;
+    private final UnaryOperator<I> cloneFunction;
 
     /**
      * {@link Benchmark} to use on the accumulation.
