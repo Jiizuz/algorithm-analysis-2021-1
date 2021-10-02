@@ -46,7 +46,9 @@ public class Main {
                 .build();
 
         // Benchmark to use on the tests
-        final Benchmark benchmark = new QuietBenchmark( BENCHMARK_EXECUTIONS );
+        final Benchmark benchmark = QuietBenchmark.builder()
+                .executions( BENCHMARK_EXECUTIONS )
+                .build();
 
         // comparator to generate the comparisons
         final FunctionComparator<long[], long[]> comparator = ChartFunctionComparator.<long[], long[]>builder()
