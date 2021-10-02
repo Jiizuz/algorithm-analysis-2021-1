@@ -3,6 +3,7 @@ package com.github.jiizuz.algorithmanalysis.benchmark;
 import com.google.common.base.Strings;
 import com.google.common.math.DoubleMath;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -21,6 +22,7 @@ import java.util.function.Supplier;
  * @see com.github.jiizuz.algorithmanalysis.benchmark.Benchmark
  * @since 1.0
  */
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConsoleBenchmark implements Benchmark {
@@ -36,6 +38,13 @@ public class ConsoleBenchmark implements Benchmark {
      * <p>This value is used when a NoArgsConstructor is used
      */
     private static final int EXECUTIONS = 1000000000;
+
+    /**
+     * Default status about whether we should skip the warm-up.
+     *
+     * <p>This value is used when a NoArgsConstructor is used
+     */
+    private static final boolean SKIP_WARM_UP = false;
 
     /**
      * Amount of lines to display the progress bar.
@@ -59,7 +68,18 @@ public class ConsoleBenchmark implements Benchmark {
      *
      * @see #EXECUTIONS
      */
+    @Builder.Default
     private int executions = EXECUTIONS;
+
+    /**
+     * Whether we should skip the warm-up phase of the functions.
+     *
+     * <p><b style = "color: red">Note:</b> Skip this phase is not
+     * recommended since it will make the Benchmark to produce
+     * inaccurate time results on the testing of a function.
+     */
+    @Builder.Default
+    private final boolean skipWarmUp = SKIP_WARM_UP;
 
     /**
      * {@inheritDoc}
@@ -67,7 +87,10 @@ public class ConsoleBenchmark implements Benchmark {
     @NonNull
     @Override
     public <I, O> TimeResults test(final @NonNull Function<I, O> function, final @NonNull Supplier<I> iSupplier) {
-        warmUp( function, iSupplier );
+        if ( skipWarmUp )
+        {
+            warmUp( function, iSupplier );
+        }
 
         return time( function, iSupplier );
     }
