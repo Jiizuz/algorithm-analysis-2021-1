@@ -8,7 +8,7 @@ import com.github.jiizuz.algorithmanalysis.algorithm.recursive.recursives.Recurs
 import com.github.jiizuz.algorithmanalysis.benchmark.Benchmark;
 import com.github.jiizuz.algorithmanalysis.benchmark.QuietBenchmark;
 import com.google.common.collect.ImmutableList;
-import it.unimi.dsi.fastutil.ints.Int2IntFunction;
+import it.unimi.dsi.fastutil.ints.IntUnaryOperator;
 import lombok.experimental.UtilityClass;
 
 import java.util.function.Function;
@@ -46,12 +46,14 @@ public class Main {
                 .build();
 
         // Benchmark to use on the tests
-        final Benchmark benchmark = new QuietBenchmark( BENCHMARK_EXECUTIONS );
+        final Benchmark benchmark = QuietBenchmark.builder()
+                .executions( BENCHMARK_EXECUTIONS )
+                .build();
 
         // comparator to generate the comparisons
         final FunctionComparator<Integer, Long> comparator = ChartFunctionComparator.<Integer, Long>builder()
                 .inputSupplier( i -> i )
-                .cloneFunction( Int2IntFunction.identity() )
+                .cloneFunction( IntUnaryOperator.identity() )
                 .benchmark( benchmark )
                 .tests( COMPARATOR_TESTS )
                 .chartTitle( "CPU Time / Fibonacci number" )
