@@ -66,7 +66,7 @@ public class AlgebraicNotation implements Comparable<AlgebraicNotation>, Cloneab
      *
      * @return the File component
      */
-    public int getFile() {
+    public char getFile() {
         return file;
     }
 
