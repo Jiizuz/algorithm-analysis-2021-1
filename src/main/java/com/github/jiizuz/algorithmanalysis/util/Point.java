@@ -19,8 +19,8 @@ import java.util.function.IntUnaryOperator;
  */
 public class Point implements Comparable<Point>, Cloneable {
 
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
 
     /**
      * Construct the point with provided integer components.
