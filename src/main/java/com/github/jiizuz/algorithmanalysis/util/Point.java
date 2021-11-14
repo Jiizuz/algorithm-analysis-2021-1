@@ -225,6 +225,7 @@ public class Point implements Comparable<Point>, Cloneable {
      * @param m the factor
      * @return the same point
      */
+    @NonNull
     public Point multiply(final float m) {
         x *= m;
         y *= m;
