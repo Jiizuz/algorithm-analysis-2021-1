@@ -61,6 +61,21 @@ public final class ImmutablePoint extends Point implements Cloneable {
     }
 
     /**
+     * Returns an immutable point with the components of the specified one.
+     *
+     * @param point to copy from the components
+     * @return the copied point
+     */
+    @NonNull
+    public static ImmutablePoint copyOf(final @NonNull Point point) {
+        if (point instanceof ImmutablePoint) {
+            return (ImmutablePoint) point;
+        }
+
+        return ImmutablePoint.of(point.getX(), point.getY());
+    }
+
+    /**
      * Guaranteed to throw an exception and leave the point unmodified.
      *
      * @throws UnsupportedOperationException always
