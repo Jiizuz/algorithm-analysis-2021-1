@@ -49,7 +49,7 @@ public class AlgebraicNotation implements Comparable<AlgebraicNotation>, Cloneab
      * @param rank Rank component
      */
     public AlgebraicNotation(final char file, final byte rank) {
-        this.file = file;
+        this.file = Character.toLowerCase(file);
         this.rank = rank;
     }
 
