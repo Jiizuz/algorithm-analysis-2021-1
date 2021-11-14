@@ -15,6 +15,15 @@ import java.util.function.IntUnaryOperator;
 public final class ImmutablePoint extends Point implements Cloneable {
 
     /**
+     * In mathematics, the origin of a Euclidean space is a special point,
+     * usually denoted by the letter O, used as a fixed point of reference
+     * for the geometry of the surrounding space.
+     *
+     * <p>Its components are as 0.
+     */
+    private static final ImmutablePoint ORIGIN = new ImmutablePoint();
+
+    /**
      * Construct the point with provided integer components.
      *
      * @param x X component
@@ -48,7 +57,7 @@ public final class ImmutablePoint extends Point implements Cloneable {
      */
     @NonNull
     public static ImmutablePoint origin() {
-        return new ImmutablePoint();
+        return ORIGIN;
     }
 
     /**
