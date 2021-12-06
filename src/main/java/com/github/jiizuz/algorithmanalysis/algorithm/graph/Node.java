@@ -79,7 +79,7 @@ public interface Node extends Comparable<Node>, Iterable<Link>, Cloneable {
      * @implNote The returned {@link Set} <b>CAN</b> be <i>immutable</i>.
      */
     @NonNull
-    Set<? extends Link> getLinks();
+    Set<Link> getLinks();
 
     /**
      * Returns whether this {@link Node} has a {@link Link} with the
@@ -89,6 +89,16 @@ public interface Node extends Comparable<Node>, Iterable<Link>, Cloneable {
      * the node with specified {@code Id}, {@code false} otherwise.
      */
     boolean hasLink(int nodeId);
+
+    /**
+     * Appends the specified {@link Link} to this {@link Node}.
+     *
+     * @param link to append to this node
+     * @return {@code true} if a link with the same node was
+     * previously connected in this {@link Node}
+     * @throws NullPointerException if the node is {@code null}
+     */
+    boolean addLink(@NonNull Link link);
 
     /**
      * Retrieve the {@link Link} in this {@link Node} with the specified
