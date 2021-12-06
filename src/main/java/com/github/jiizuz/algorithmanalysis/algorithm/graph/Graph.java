@@ -121,9 +121,11 @@ public interface Graph extends Iterable<Node>, Cloneable {
      * Removes the specified {@link Node} from this {@link Graph}.
      *
      * @param node to remove from this {@link Graph}
+     * @return the {@link Node} that was removed from this {@link Graph}.
      * @throws NullPointerException if the node is {@code null}
      */
-    void removeNode(@NonNull Node node);
+    @NonNull
+    Optional<Node> removeNode(@NonNull Node node);
 
     /**
      * Removes the {@link Node} with the specified {@code Id}.
